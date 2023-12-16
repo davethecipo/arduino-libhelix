@@ -19,8 +19,12 @@ target_compile_options(arduino_helix PRIVATE -DUSE_DEFAULT_STDLIB)
 target_include_directories(arduino_helix PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src ${CMAKE_CURRENT_SOURCE_DIR}/src/libhelix-mp3 ${CMAKE_CURRENT_SOURCE_DIR}/src/libhelix-aac )
 
 # build examples
-set (BUILD_EXAMPLES ON)
-if (BUILD_EXAMPLES)
-    add_subdirectory( "${CMAKE_CURRENT_SOURCE_DIR}/examples/output_mp3")
-    add_subdirectory( "${CMAKE_CURRENT_SOURCE_DIR}/examples/output_aac")
+if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
+    # We're in the root, define additional targets for developers.
+    option(ARDUINO_HELIX_BUILD_EXAMPLES   "whether or not examples should be built" ON)
+
+    if(ARDUINO_HELIX_BUILD_EXAMPLES)
+        add_subdirectory( "${CMAKE_CURRENT_SOURCE_DIR}/examples/output_mp3")
+        add_subdirectory( "${CMAKE_CURRENT_SOURCE_DIR}/examples/output_aac")
+    endif()
 endif()
